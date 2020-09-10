@@ -1,0 +1,69 @@
+server:port: 8080
+server:servlet:context-path: /cjd
+
+#这里记录一下，如果yml中的属性没有，但是controller中有${}的情况下，springboot启动会报错
+name: 陈建德
+baiduUrl: http://www.baidu.com
+content: "name:${name},baiduUrl:${baiduUrl}"
+
+author:
+  name: 陈建德
+  baiduUrl: http://www.baidu.com
+  content: "name:${name},baiduUrl:${baiduUrl}"
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/spring?serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #       下面为连接池设置，应用到上面的数据源中（一些最基本的设置）
+    # 初始化大小，最小，最大
+    #spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  #配置html模板引擎
+  freemarker:
+    template-loader-path: classpath:/templates/
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html;charset=UTF-8 #freemarker如果有中文乱码，就得在这里加上utf8
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+    suffix: .ftl
+
+log4j:
+  logger:
+    freemarker:
+      cache: INFO
+      beans: INFO
+
+logging:
+  config:classpath*: classpath*:spring/log4j2-spring.xml
+  level:
+    com.cjd: trace
+
+
+
+
